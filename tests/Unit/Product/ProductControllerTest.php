@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Admin\Product;
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\ProductServices;
@@ -20,6 +21,7 @@ class ProductControllerTest extends TestCase
     {
         parent::setUp();
         $this->productService = \Mockery::mock(ProductServices::class);
+        $this->actingAs(Admin::factory()->create(), 'admin');
     }
 
     public function testCanSeeAllProductsOnIndexPage(): void

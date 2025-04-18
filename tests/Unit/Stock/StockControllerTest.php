@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Admin\Stock;
 
+use App\Models\Admin;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Services\ProductServices;
@@ -23,6 +24,7 @@ class StockControllerTest extends TestCase
         parent::setUp();
         $this->stockServices = \Mockery::mock(StockServices::class);
         $this->productServices = \Mockery::mock(ProductServices::class);
+        $this->actingAs(Admin::factory()->create(), 'admin');
     }
 
     public function testCanSeeAllStocksOnIndexPage(): void
