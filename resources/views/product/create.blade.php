@@ -39,7 +39,7 @@
 
         <div>
             <label for="category" class="block text-lg text-slagerij-green">Categorie</label>
-            <select name="category" id="category" class="w-full px-4 py-2 border rounded-md" required>
+            <select name="category_id" id="category" class="w-full px-4 py-2 border rounded-md" required>
                 <option value="">-- Kies een categorie --</option>
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}" {{ old('category') == $category->id ? 'selected' : '' }}>
