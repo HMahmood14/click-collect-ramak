@@ -41,6 +41,17 @@ class VisitorController extends Controller
         return view('visitor.products', compact('products', 'category'));
     }
 
+    public function showProduct(string $uuid): View
+    {
+        $product = $this->productServices->getProductByUuid($uuid);
+
+        if (!$product) {
+            return redirect()->route('home')->with('error', 'Product niet gevonden');
+        }
+
+        return view('visitor.product', compact('product'));
+    }
+
     public function addToCart(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -48,9 +59,25 @@ class VisitorController extends Controller
             'quantity' => 'required|numeric|min:0.1',
         ]);
 
-        $this->cartService->addToCart($validated['product_id'], $validated['quantity']);
+
+
+        $productId = (int) $validated['product_id'];
+        $quantity = (float) $validated['quantity'];
+
+        $this->cartService->addToCart($productId, $quantity);
 
         return back()->with('success', 'Product toegevoegd aan winkelmandje.');
+    }
+
+    public function updateCartQuantity(Request $request, string $uuid): RedirectResponse
+    {
+        $validated = $request->validate([
+            'quantity' => 'required|numeric|min:0.1',
+        ]);
+
+        $this->cartService->updateQuantity($uuid, $validated['quantity']);
+
+        return back()->with('success', 'Hoeveelheid aangepast.');
     }
 
     public function showCart(): View

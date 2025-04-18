@@ -16,10 +16,12 @@ Route::get('/', function () {
 
 Route::get('/', [VisitorController::class, 'showCategories'])->name('home');
 Route::get('/products/category/{category}', [VisitorController::class, 'showProductsByCategory'])->name('products.category');
+Route::get('/product/{uuid}', [VisitorController::class, 'showProduct'])->name('product.show');
 Route::get('/cart', [VisitorController::class, 'showCart'])->name('cart.show');
 Route::post('/cart/add', [VisitorController::class, 'addToCart'])->name('cart.add');
 Route::delete('/cart/remove/{uuid}', [VisitorController::class, 'removeFromCart'])->name('cart.remove');
 Route::post('/cart/clear', [VisitorController::class, 'clearCart'])->name('cart.clear');
+Route::patch('/cart/update/{uuid}', [VisitorController::class, 'updateCartQuantity'])->name('cart.update');
 Route::get('/checkout', [OrderController::class, 'showCheckoutForm'])->name('checkout.form');
 Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('order.place');
 Route::get('/order/confirmation', [OrderController::class, 'orderConfirmation'])->name('order.confirmation');
