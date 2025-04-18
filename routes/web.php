@@ -37,7 +37,9 @@ Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.lo
 Route::prefix('admin')->middleware([RedirectIfNotAuthenticated::class])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-    Route::get('orders', [AdminController::class, 'orders'])->name('admin.orders');
+    Route::get('orders', [OrderController::class, 'orders'])->name('order.index');
+    Route::delete('delete/order/{uuid}', [OrderController::class, 'destroyOrder'])->name('order.delete');
+    Route::patch('order/{uuid}/update-status', [OrderController::class, 'updateStatusAndSendReminder'])->name('order.updateStatus');
 
     Route::get('categories', [CategoryController::class, 'index'])->name('category.index');
     Route::get('/create/category', [CategoryController::class, 'create'])->name('category.create');

@@ -59,7 +59,7 @@
                     <td class="px-6 py-4 text-sm text-gray-500">{{ \Carbon\Carbon::parse($order->pickup_time)->format('d-m-Y H:i') }}</td>
                     <td class="px-6 py-4 text-sm text-gray-500">
                         <div class="flex flex-col gap-2">
-                            <form action="#" method="POST">
+                            <form action="{{ route('order.updateStatus', $order->uuid) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <label class="inline-flex items-center cursor-pointer">
@@ -67,7 +67,7 @@
                                         type="checkbox"
                                         name="status"
                                         onchange="this.form.submit()"
-                                        {{ $order->status === 'ready' ? 'checked' : '' }}
+                                        {{ $order->status === 'completed' ? 'checked' : '' }}
                                         class="sr-only peer"
                                     >
                                     <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:bg-green-500 relative">
@@ -77,7 +77,7 @@
                                 </label>
                             </form>
 
-                            <form action="#" method="POST">
+                            <form action="{{ route('order.delete', $order->uuid) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:underline">Verwijderen</button>

@@ -56,4 +56,29 @@ class OrderController extends Controller
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
+
+    public function orders(): View
+    {
+        $orders = $this->orderServices->getAll();
+
+        return view('admin.orders', compact('orders'));
+    }
+
+    public function updateStatusAndSendReminder(string $uuid): RedirectResponse
+    {
+        $orderUpdated = $this->orderServices->updateStatusAndSendReminder($uuid);
+
+        if ($orderUpdated) {
+            return redirect()->route('order.index')->with('success', 'Bestelling is gemarkeerd als klaar voor afhaal en een herinnering is verstuurd.');
+        }
+
+        return back()->with('error', 'Deze bestelling heeft al de status "Klaar voor afhaal".');
+    }
+
+    public function destroyOrder($uuid): RedirectResponse
+    {
+        $this->orderServices->deleteOrder($uuid);
+
+        return redirect()->route('order.index')->with('success', 'Bestelling succesvol verwijderd.');
+    }
 }

@@ -13,7 +13,7 @@
     <nav class="space-y-4 text-sm font-medium">
         <a href="{{ route('category.index') }}" class="block hover:text-white text-white/90 transition">Categorieën</a>
         <a href="{{ route('product.index') }}" class="block hover:text-white text-white/90 transition">Producten</a>
-        <a href="{{route('admin.orders')}}" class="block hover:text-white text-white/90 transition">Bestellingen</a>
+        <a href="{{route('order.index')}}" class="block hover:text-white text-white/90 transition">Bestellingen</a>
     </nav>
 
     <div class="mt-auto fixed bottom-6 left-0 w-64">
