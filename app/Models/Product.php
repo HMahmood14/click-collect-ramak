@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
+/**
+ * @property-read \App\Models\Stock|null $currentStock
+ */
+
 class Product extends Model
 {
     use HasFactory;

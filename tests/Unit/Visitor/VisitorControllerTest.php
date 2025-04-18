@@ -7,6 +7,7 @@ namespace Tests\Unit\Visitor;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
 class VisitorControllerTest extends TestCase
@@ -45,5 +46,80 @@ class VisitorControllerTest extends TestCase
             $response->assertSee($product->description);
             $response->assertSee(number_format($product->price, 2));
         }
+    }
+
+    public function testVisitorCanAddProductToCart()
+    {
+        Product::factory()->create();
+        $product = Product::first();
+
+        $response = $this->post(route('cart.add'), [
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+
+        $cart = Session::get('cart');
+        $this->assertNotNull($cart);
+        $this->assertCount(1, $cart);
+        $this->assertEquals($product->id, $cart[$product->id]['product_id']);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success', 'Product toegevoegd aan winkelmandje.');
+    }
+
+    public function testCustomerCanRemoveSpecificProductFromCart()
+    {
+        Product::factory()->count(4)->create();
+
+        $products = Product::all();
+        $productToRemove = $products->first();
+
+        foreach ($products as $product) {
+            $this->post(route('cart.add'), [
+                'product_id' => $product->id,
+                'quantity' => 1,
+            ]);
+        }
+
+        $uuidToRemove = $productToRemove->uuid;
+
+        $cart = Session::get('cart');
+        $this->assertNotEmpty($cart);
+        $this->assertCount(4, $cart);
+
+        $response = $this->delete(route('cart.remove', ['uuid' => $uuidToRemove]));
+
+        $cart = Session::get('cart');
+        $this->assertCount(3, $cart);
+        $this->assertArrayNotHasKey($uuidToRemove, $cart);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success', 'Product verwijderd uit winkelmandje.');
+    }
+
+    public function testCustomerCanClearCart()
+    {
+        Product::factory()->count(4)->create();
+
+        $products = Product::all();
+
+        foreach ($products as $product) {
+            $this->post(route('cart.add'), [
+                'product_id' => $product->id,
+                'quantity' => 1,
+            ]);
+        }
+
+        $cart = Session::get('cart');
+        $this->assertNotEmpty($cart);
+        $this->assertCount(4, $cart);
+
+        $response = $this->post(route('cart.clear'));
+
+        $cart = Session::get('cart');
+        $this->assertEmpty($cart);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success', 'Winkelmandje geleegd.');
     }
 }
