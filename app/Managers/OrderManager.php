@@ -8,6 +8,7 @@ use App\Mail\OrderConfirmationMail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 
 class OrderManager
@@ -55,5 +56,10 @@ class OrderManager
         Mail::to($order->customer->email)->send(new OrderConfirmationMail($order));
 
         return $order;
+    }
+
+    public function getAllOrders(): Collection
+    {
+        return Order::with('customer', 'items.product')->get();
     }
 }
