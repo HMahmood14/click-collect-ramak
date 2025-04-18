@@ -13,8 +13,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/', [VisitorController::class, 'show'])->name('home');
-
+Route::get('/', [VisitorController::class, 'showCategories'])->name('home');
+Route::get('/products/category/{category}', [VisitorController::class, 'showProductsByCategory'])->name('products.category');
 Route::get('/contact', function () {
     return view('contact');
 });
