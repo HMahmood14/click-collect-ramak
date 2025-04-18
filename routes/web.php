@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\VisitorController;
@@ -15,6 +16,13 @@ Route::get('/', function () {
 
 Route::get('/', [VisitorController::class, 'showCategories'])->name('home');
 Route::get('/products/category/{category}', [VisitorController::class, 'showProductsByCategory'])->name('products.category');
+Route::get('/cart', [VisitorController::class, 'showCart'])->name('cart.show');
+Route::post('/cart/add', [VisitorController::class, 'addToCart'])->name('cart.add');
+Route::delete('/cart/remove/{uuid}', [VisitorController::class, 'removeFromCart'])->name('cart.remove');
+Route::post('/cart/clear', [VisitorController::class, 'clearCart'])->name('cart.clear');
+Route::get('/checkout', [OrderController::class, 'showCheckoutForm'])->name('checkout.form');
+Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('order.place');
+Route::get('/order/confirmation', [OrderController::class, 'orderConfirmation'])->name('order.confirmation');
 Route::get('/contact', function () {
     return view('contact');
 });
