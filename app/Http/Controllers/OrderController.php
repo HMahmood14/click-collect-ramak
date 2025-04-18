@@ -51,14 +51,9 @@ class OrderController extends Controller
         try {
             $this->orderServices->createOrder($orderData);
             Session::forget('cart');
-            return redirect()->route('order.confirmation')->with('success', 'Bestelling succesvol geplaatst.');
+            return redirect()->route('checkout.form')->with('success', 'Bestelling succesvol geplaatst. Er is een e-mail naar u verstuurd met de details van de bestelling.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
-    }
-
-    public function orderConfirmation(): View
-    {
-        return view('visitor.order-confirmation');
     }
 }

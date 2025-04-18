@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Visitor;
 
-use App\Models\Category;
+use App\Mail\OrderConfirmationMail;
 use App\Models\Product;
 use App\Models\Stock;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
@@ -35,6 +36,7 @@ class OrderControllerTest extends TestCase
 
     public function testPlaceOrderWithValidData(): void
     {
+        Mail::fake();
         $product = Product::factory()->create();
 
         Stock::factory()->create([
@@ -54,8 +56,10 @@ class OrderControllerTest extends TestCase
             'pickup_time' => now()->addHour(),
         ]);
 
-        $response->assertRedirect(route('order.confirmation'));
-        $response->assertSessionHas('success', 'Bestelling succesvol geplaatst.');
+        $response->assertRedirect(route('checkout.form'));
+        $response->assertSessionHas('success', 'Bestelling succesvol geplaatst. Er is een e-mail naar u verstuurd met de details van de bestelling.');
+
+        Mail::assertSent(OrderConfirmationMail::class);
 
         $this->assertEmpty(Session::get('cart'));
     }
