@@ -24,7 +24,7 @@
         @foreach ($categories as $category)
             <div class="bg-white p-4 rounded shadow">
                 <h3 class="text-xl font-bold text-slagerij-green">{{ $category->name }}</h3>
-                <a href="#" class="text-slagerij-green hover:underline">Bekijk producten</a>
+                <a href="{{ route('products.category', $category->uuid) }}" class="text-slagerij-green hover:underline">Bekijk producten</a>
             </div>
         @endforeach
     </div>
