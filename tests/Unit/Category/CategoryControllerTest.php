@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Admin\Category;
+namespace Tests\Unit\Category;
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Services\CategoryServices;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,6 +20,7 @@ class CategoryControllerTest extends TestCase
     {
         parent::setUp();
         $this->categoryService = \Mockery::mock(CategoryServices::class);
+        $this->actingAs(Admin::factory()->create(), 'admin');
     }
 
     public function testCanSeeAllCategoriesOnIndexPage(): void
