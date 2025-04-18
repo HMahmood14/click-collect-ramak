@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Managers;
 
+use App\Mail\OrderConfirmationMail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Illuminate\Support\Facades\Mail;
 
 class OrderManager
 {
@@ -21,13 +23,13 @@ class OrderManager
         $total = 0;
 
         foreach ($data['items'] as $item) {
-            $product = Product::findOrFail($item['product_id']);
+            $product = Product::where('uuid', $item['uuid'])->firstOrFail();
 
             $quantity = $item['quantity'];
             $pricePerKg = $product->price;
             $lineTotal = $pricePerKg * $quantity;
 
-            $stock = $product->curgrentStock;
+            $stock = $product->currentStock;
 
             if (!$stock || $stock->quantity < $quantity) {
                 throw new \Exception("Onvoldoende voorraad voor product: {$product->name}");
@@ -48,6 +50,9 @@ class OrderManager
         }
 
         $order->update(['total_price' => $total]);
+        $order->load('customer', 'items');
+
+        Mail::to($order->customer->email)->send(new OrderConfirmationMail($order));
 
         return $order;
     }

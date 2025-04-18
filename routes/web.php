@@ -24,7 +24,6 @@ Route::post('/cart/clear', [VisitorController::class, 'clearCart'])->name('cart.
 Route::patch('/cart/update/{uuid}', [VisitorController::class, 'updateCartQuantity'])->name('cart.update');
 Route::get('/checkout', [OrderController::class, 'showCheckoutForm'])->name('checkout.form');
 Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('order.place');
-Route::get('/order/confirmation', [OrderController::class, 'orderConfirmation'])->name('order.confirmation');
 Route::get('/contact', function () {
     return view('contact');
 });
