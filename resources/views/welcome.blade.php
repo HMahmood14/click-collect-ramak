@@ -21,42 +21,12 @@
 <section id="assortiment" class="container mx-auto py-12">
     <h2 class="text-2xl font-bold text-center mb-6 text-slagerij-green">Ons Assortiment</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-xl font-bold text-slagerij-green">Kip</h3>
-            <img src="/images/home/kip.png" alt="Kip" class="w-full h-40 object-cover mb-4">
-            <p>Vers en smaakvol kippenvlees.</p>
-            <a href="#" class="text-slagerij-green hover:underline">Bekijk meer</a>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-xl font-bold text-slagerij-green">Rund</h3>
-            <img src="/images/home/koe.png" alt="Rund" class="w-full h-40 object-cover mb-4">
-            <p>Topkwaliteit rundvlees.</p>
-            <a href="#" class="text-slagerij-green hover:underline">Bekijk meer</a>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-xl font-bold text-slagerij-green">Lams</h3>
-            <img src="/images/home/lam.png" alt="Lams" class="w-full h-40 object-cover mb-4">
-            <p>Heerlijke lamsproducten.</p>
-            <a href="#" class="text-slagerij-green hover:underline">Bekijk meer</a>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-xl font-bold text-slagerij-green">Broodbeleg</h3>
-            <img src="/images/home/beleg.png" alt="Broodbeleg" class="w-full h-40 object-cover mb-4">
-            <p>Populaire broodbeleg producten zoals ham, kaas en salami.</p>
-            <a href="#" class="text-slagerij-green hover:underline">Bekijk meer</a>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-xl font-bold text-slagerij-green">Hardlopers</h3>
-            <img src="/images/home/snitzel.png" alt="Hardlopers" class="w-full h-40 object-cover mb-4">
-            <p>Onze bestsellers die vaak besteld worden!</p>
-            <a href="#" class="text-slagerij-green hover:underline">Bekijk meer</a>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-xl font-bold text-slagerij-green">Premium</h3>
-            <img src="/images/home/premium.png" alt="Premium" class="w-full h-40 object-cover mb-4">
-            <p>Exclusieve premium producten voor de fijnproever!</p>
-            <a href="#" class="text-slagerij-green hover:underline">Bekijk meer</a>
-        </div>
+        @foreach ($categories as $category)
+            <div class="bg-white p-4 rounded shadow">
+                <h3 class="text-xl font-bold text-slagerij-green">{{ $category->name }}</h3>
+                <a href="#" class="text-slagerij-green hover:underline">Bekijk producten</a>
+            </div>
+        @endforeach
     </div>
 </section>
 
