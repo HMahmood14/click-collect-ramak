@@ -14,6 +14,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
+            'id' => $this->faker->unique()->numberBetween(1, 1000),
             'uuid' => (string) Str::uuid(),
             'name' => $this->faker->name(),
         ];

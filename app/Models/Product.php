@@ -3,22 +3,22 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\CategoryFactory;
+use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
-class Category extends Model
+class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
-
-    protected static function newFactory(): Factory
-    {
-        return CategoryFactory::new();
-    }
+    protected $fillable =[
+        'name',
+        'description',
+        'price',
+        'category_id',
+    ];
 
     protected static function boot()
     {
@@ -29,8 +29,13 @@ class Category extends Model
         });
     }
 
-    public function products(): HasMany
+    protected static function newFactory(): Factory
     {
-        return $this->hasMany(Product::class);
+        return ProductFactory::new();
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

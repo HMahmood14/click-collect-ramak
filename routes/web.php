@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,3 +19,11 @@ Route::post('create/category', [CategoryController::class, 'store'])->name('cate
 Route::get('category/{uuid}', [CategoryController::class, 'edit'])->name('category.edit');
 Route::put('update/category/{uuid}', [CategoryController::class, 'update'])->name('category.update');
 Route::delete('delete/category/{uuid}', [CategoryController::class, 'destroy'])->name('category.delete');
+
+
+Route::get('products', [ProductController::class, 'index'])->name('product.index');
+Route::get('/create/product', [ProductController::class, 'create'])->name('product.create');
+Route::post('create/product', [ProductController::class, 'store'])->name('product.store');
+Route::get('product/{uuid}', [ProductController::class, 'edit'])->name('product.edit');
+Route::put('update/product/{uuid}', [ProductController::class, 'update'])->name('product.update');
+Route::delete('delete/product/{uuid}', [ProductController::class, 'destroy'])->name('product.delete');
