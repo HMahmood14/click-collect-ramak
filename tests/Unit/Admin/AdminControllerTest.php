@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Admin;
 
 use App\Models\Admin;
+use App\Models\Customer;
+use App\Models\Order;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -56,5 +58,26 @@ class AdminControllerTest extends TestCase
 
         $response->assertRedirect('/');
         $this->assertGuest('admin');
+    }
+
+    public function testAdminCanSeeOrders()
+    {
+        $this->actingAs(Admin::factory()->create([
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+        ]), 'admin');
+
+        $customer = Customer::factory()->create();
+        $order1 = Order::factory()->create(['customer_id' => $customer->id]);
+        $order2 = Order::factory()->create(['customer_id' => $customer->id]);
+
+        $response = $this->get(route('admin.orders'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('admin.orders');
+        $response->assertViewHas('orders');
+        $response->assertSee($order1->id);
+        $response->assertSee($order2->id);
+        $response->assertSee($customer->name);
     }
 }

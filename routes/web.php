@@ -37,6 +37,8 @@ Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.lo
 Route::prefix('admin')->middleware([RedirectIfNotAuthenticated::class])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
+    Route::get('orders', [AdminController::class, 'orders'])->name('admin.orders');
+
     Route::get('categories', [CategoryController::class, 'index'])->name('category.index');
     Route::get('/create/category', [CategoryController::class, 'create'])->name('category.create');
     Route::post('create/category', [CategoryController::class, 'store'])->name('category.store');

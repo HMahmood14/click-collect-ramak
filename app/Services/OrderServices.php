@@ -8,6 +8,7 @@ use App\Managers\CustomerManager;
 use App\Managers\OrderManager;
 use App\Models\Customer;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Collection;
 
 class OrderServices
 {
@@ -36,5 +37,10 @@ class OrderServices
         $orderData['customer_id'] = $customer->id;
 
         return $this->orderManager->create($orderData);
+    }
+
+    public function getAll(): Collection
+    {
+        return $this->orderManager->getAllOrders();
     }
 }

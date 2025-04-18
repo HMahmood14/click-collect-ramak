@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\AdminServices;
+use App\Services\OrderServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -13,10 +14,12 @@ use Illuminate\Http\RedirectResponse;
 class AdminController extends Controller
 {
     protected AdminServices $adminServices;
+    protected OrderServices $orderServices;
 
-    public function __construct(AdminServices $adminServices)
+    public function __construct(AdminServices $adminServices, OrderServices $orderServices)
     {
         $this->adminServices = $adminServices;
+        $this->orderServices = $orderServices;
     }
 
     public function showLoginForm(): View
@@ -54,5 +57,12 @@ class AdminController extends Controller
     {
         Auth::guard('admin')->logout();
         return redirect('/');
+    }
+
+    public function orders(): View
+    {
+        $orders = $this->orderServices->getAll();
+
+        return view('admin.orders', compact('orders'));
     }
 }
