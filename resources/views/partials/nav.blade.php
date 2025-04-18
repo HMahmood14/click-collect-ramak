@@ -1,34 +1,3 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramak Slagerij - Assortiment</title>
-    @vite(['resources/css/app.css'])
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const toggleButton = document.getElementById("dropdownDefaultButton");
-            const dropdownMenu = document.getElementById("dropdown");
-            const menuToggle = document.getElementById("menu-toggle");
-            const mobileMenu = document.getElementById("mobile-menu");
-
-            toggleButton.addEventListener("click", function() {
-                dropdownMenu.classList.toggle("hidden");
-            });
-
-            document.addEventListener("click", function(event) {
-                if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                    dropdownMenu.classList.add("hidden");
-                }
-            });
-
-            menuToggle.addEventListener("click", function() {
-                mobileMenu.classList.toggle("hidden");
-            });
-        });
-    </script>
-</head>
-<body class="bg-gray-100">
 <nav class="bg-slagerij-green p-4 text-black">
     <div class="container mx-auto flex justify-between items-center">
         <h1 class="text-xl font-bold">Ramak Slagerij</h1>
@@ -58,11 +27,13 @@
                 </div>
             </li>
             <li><a href="/contact" class="hover:text-slagerij-black py-2">Contact</a></li>
-            <li class="relative">
-                <a href="/winkelwagen" class="hover:text-slagerij-black flex items-center relative py-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" class="h-6 w-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            <li>
+                <a href="{{ route('admin.login') }}" class="text-black border border-slagerij-green px-4 py-1.5 rounded-md hover:bg-slagerij-green hover:text-white transition flex items-center space-x-2">
+                    <!-- Het icoon is nu standaard zwart en zal wit worden bij hover -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-3.31 0-6 2.69-6 6h12c0-3.31-2.69-6-6-6z"/>
                     </svg>
+                    <span class="text-black group-hover:text-white">Admin</span>
                 </a>
             </li>
         </ul>
@@ -93,6 +64,7 @@
         </a>
     </div>
 </nav>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const dropdownMobileButton = document.getElementById("dropdownMobileButton");
@@ -109,5 +81,3 @@
         });
     });
 </script>
-</body>
-</html>
