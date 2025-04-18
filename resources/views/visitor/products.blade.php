@@ -34,7 +34,7 @@
                     <h3 class="text-xl font-bold text-slagerij-green">{{ $product->name }}</h3>
                     <p>{{ $product->description }}</p>
                     <p class="text-lg font-semibold text-slagerij-green">€ {{ number_format($product->price, 2) }}</p>
-                    <a href="#" class="text-slagerij-green hover:underline mt-4 inline-block">Bestel</a>
+                    <a href="{{ route('product.show', ['uuid' => $product->uuid]) }}" class="text-slagerij-green hover:underline mt-4 inline-block">Bestel</a>
                 </div>
             @endforeach
         </div>

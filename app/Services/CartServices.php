@@ -25,11 +25,15 @@ class CartServices
         return $this->cartManager->getCartWithProducts();
     }
 
-    public function addToCart(int $productId, int $quantity): void
+    public function addToCart(int $productId, float $quantity): void
     {
         $this->cartManager->addToCart($productId, $quantity);
     }
 
+    public function updateQuantity(string $uuid, float $quantity): void
+    {
+        $this->cartManager->updateQuantity($uuid, $quantity);
+    }
     public function removeFromCart(string $uuid): void
     {
         $this->cartManager->removeFromCart($uuid);

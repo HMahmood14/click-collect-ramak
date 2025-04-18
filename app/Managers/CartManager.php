@@ -34,7 +34,7 @@ class CartManager
         return $cartWithProducts;
     }
 
-    public function addToCart(int $productId, int $quantity): void
+    public function addToCart(int $productId, float $quantity): void
     {
         $cart = $this->getCart();
 
@@ -51,6 +51,21 @@ class CartManager
                 'name' => $product->name,
                 'price' => $product->price
             ];
+        }
+
+        Session::put('cart', $cart);
+    }
+
+    public function updateQuantity(string $uuid, float $quantity): void
+    {
+        $cart = $this->getCart();
+
+        if (isset($cart[$uuid])) {
+            if ($quantity <= 0.0) {
+                unset($cart[$uuid]);
+            } else {
+                $cart[$uuid]['quantity'] = $quantity;
+            }
         }
 
         Session::put('cart', $cart);
