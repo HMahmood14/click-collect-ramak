@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Stock;
+namespace Tests\Unit\Admin\Stock;
 
 use App\Models\Product;
 use App\Models\Stock;

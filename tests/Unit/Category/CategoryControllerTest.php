@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Category;
+namespace Tests\Unit\Admin\Category;
 
 use App\Models\Category;
 use App\Services\CategoryServices;

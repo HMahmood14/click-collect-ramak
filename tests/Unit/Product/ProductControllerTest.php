@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Product;
+namespace Tests\Unit\Admin\Product;
 
 use App\Models\Category;
 use App\Models\Product;
