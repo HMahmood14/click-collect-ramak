@@ -26,7 +26,7 @@
     @endif
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-semibold text-slagerij-green">Categorieën</h2>
-        <a href="/create/category" class="bg-slagerij-green text-white px-4 py-2 rounded-lg text-lg hover:bg-green-700 transition-all">
+        <a href="/admin/create/category" class="bg-slagerij-green text-white px-4 py-2 rounded-lg text-lg hover:bg-green-700 transition-all">
             Categorie Toevoegen
         </a>
     </div>
