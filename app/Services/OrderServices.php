@@ -9,6 +9,7 @@ use App\Managers\OrderManager;
 use App\Models\Customer;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Collection;
+use mysql_xdevapi\SqlStatementResult;
 
 class OrderServices
 {
@@ -39,8 +40,18 @@ class OrderServices
         return $this->orderManager->create($orderData);
     }
 
+    public function updateStatusAndSendReminder(string $uuid): bool
+    {
+        return $this->orderManager->updateStatusAndSendReminder($uuid);
+    }
+
     public function getAll(): Collection
     {
         return $this->orderManager->getAllOrders();
+    }
+
+    public function deleteOrder(string $uuid): bool
+    {
+        return $this->orderManager->delete($uuid);
     }
 }

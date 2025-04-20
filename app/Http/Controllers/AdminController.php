@@ -58,11 +58,4 @@ class AdminController extends Controller
         Auth::guard('admin')->logout();
         return redirect('/');
     }
-
-    public function orders(): View
-    {
-        $orders = $this->orderServices->getAll();
-
-        return view('admin.orders', compact('orders'));
-    }
 }

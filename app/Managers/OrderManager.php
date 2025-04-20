@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Managers;
 
+use App\Jobs\SendReminderEmail;
 use App\Mail\OrderConfirmationMail;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -58,8 +59,34 @@ class OrderManager
         return $order;
     }
 
+    public function updateStatusAndSendReminder(string $uuid): bool
+    {
+        $order = Order::where('uuid', $uuid)->firstOrFail();
+
+        if ($order->status === 'pending') {
+            $order->status = 'completed';
+            $order->save();
+
+            SendReminderEmail::dispatch($order);
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function getAllOrders(): Collection
     {
         return Order::with('customer', 'items.product')->get();
+    }
+
+    public function delete(string $uuid): bool
+    {
+        $order = Order::where('uuid', $uuid)->first();
+
+        if ($order) {
+            return $order->delete();
+        }
+        return false;
     }
 }
