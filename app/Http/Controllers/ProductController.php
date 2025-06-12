@@ -40,6 +40,7 @@ class ProductController extends Controller
             'description' => 'required|string|max:500',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
+            'type' => 'required|in:kilo,stuk',
         ]);
 
         $category = Category::findOrFail($validated['category_id']);
@@ -49,6 +50,7 @@ class ProductController extends Controller
             'description' => $validated['description'],
             'price' => $validated['price'],
             'category_id' => $category->id,
+            'type' => $validated['type'],
         ]);
 
         return redirect()->route('product.index')->with('success', 'Product succesvol toegevoegd.');

@@ -28,8 +28,8 @@ class OrderManager
             $product = Product::where('uuid', $item['uuid'])->firstOrFail();
 
             $quantity = $item['quantity'];
-            $pricePerKg = $product->price;
-            $lineTotal = $pricePerKg * $quantity;
+            $typedProduct = $product->asType();
+            $lineTotal = $typedProduct->calculatePrice($quantity);
 
             $stock = $product->currentStock;
 

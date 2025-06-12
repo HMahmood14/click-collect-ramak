@@ -34,10 +34,14 @@ class OrderControllerTest extends TestCase
         $response->assertViewHas('total');
     }
 
-    public function testPlaceOrderWithValidData(): void
+    public function testPlaceOrderWithKiloProduct(): void
     {
         Mail::fake();
-        $product = Product::factory()->create();
+
+        $product = Product::factory()->create([
+            'price' => 8,
+            'type' => 'kilo'
+        ]);
 
         Stock::factory()->create([
             'product_id' => $product->id,
@@ -46,8 +50,14 @@ class OrderControllerTest extends TestCase
 
         $this->post(route('cart.add'), [
             'product_id' => $product->id,
-            'quantity' => 1,
+            'quantity' => 3,
         ]);
+
+        $expectedSubtotal = 24;
+
+        $actualSubtotal = $product->asType()->calculatePrice(3);
+
+        $this->assertEquals($expectedSubtotal, $actualSubtotal);
 
         $response = $this->post(route('order.place'), [
             'name' => 'John Doe',
@@ -75,5 +85,49 @@ class OrderControllerTest extends TestCase
 
         $response->assertSessionHasErrors('name');
         $response->assertStatus(302);
+    }
+
+    public function testPlaceOrderWithPieceProduct(): void
+    {
+        Mail::fake();
+
+        $product = Product::factory()->create([
+            'name' => 'RundBurger',
+            'type' => 'piece',
+            'price' => 2,
+        ]);
+
+        Stock::factory()->create([
+            'product_id' => $product->id,
+            'quantity' => 100,
+        ]);
+
+        $this->withSession([]);
+
+        $this->post(route('cart.add'), [
+            'product_id' => $product->id,
+            'quantity' => 3,
+            'type' => 'piece',
+        ]);
+
+        $expectedSubtotal = 6.0;
+
+        $actualSubtotal = $product->asType()->calculatePrice(3);
+
+        $this->assertEquals($expectedSubtotal, $actualSubtotal);
+
+        $response = $this->post(route('order.place'), [
+            'name' => 'Jane Doe',
+            'email' => 'jane.doe@example.com',
+            'phone' => '0123456789',
+            'pickup_time' => now()->addHour(),
+        ]);
+
+        $response->assertRedirect(route('checkout.form'));
+        $response->assertSessionHas('success', 'Bestelling succesvol geplaatst. Er is een e-mail naar u verstuurd met de details van de bestelling.');
+
+        Mail::assertSent(OrderConfirmationMail::class);
+
+        $this->assertEmpty(session('cart'));
     }
 }

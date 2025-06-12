@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\ProductTypes\KiloProduct;
+use App\ProductTypes\PieceProduct;
+use App\ProductTypes\ProductBase;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,5 +56,14 @@ class Product extends Model
     public function currentStock(): HasOne
     {
         return $this->hasOne(Stock::class)->latestOfMany();
+    }
+
+    public function asType(): ProductBase
+    {
+        return match ($this->type) {
+            'kilo' => new KiloProduct($this),
+            'piece' => new PieceProduct($this),
+            default => throw new \Exception("Onbekend producttype: {$this->type}")
+        };
     }
 }

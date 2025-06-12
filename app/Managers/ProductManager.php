@@ -27,6 +27,7 @@ class ProductManager
         'description' => $data['description'],
         'price' => $data['price'],
         'category_id' => $data['category_id'],
+        'type' => $data['type'],
         ]);
     }
 

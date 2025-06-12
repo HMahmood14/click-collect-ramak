@@ -52,6 +52,18 @@
             @enderror
         </div>
 
+        <div>
+            <label for="type" class="block text-lg text-slagerij-green">Type</label>
+            <select name="type" id="type" class="w-full px-4 py-2 border rounded-md" required>
+                <option value="">-- Kies een type --</option>
+                <option value="kilo" {{ old('type') == 'kilo' ? 'selected' : '' }}>Per kilo</option>
+                <option value="stuk" {{ old('type') == 'stuk' ? 'selected' : '' }}>Per stuk</option>
+            </select>
+            @error('type')
+            <div class="text-red-600 text-sm">{{ $message }}</div>
+            @enderror
+        </div>
+
         <div class="flex space-x-4">
             <button type="submit" class="bg-slagerij-green text-white px-6 py-2 rounded-lg text-lg hover:bg-green-700 transition-all">
                 Toevoegen

@@ -23,10 +23,13 @@ class CartManager
             $product = Product::find($item['product_id']);
 
             if ($product) {
+                $price = $product->asType()->calculatePrice($item['quantity']);
+
                 $cartWithProducts[] = [
                     'product' => $product,
                     'quantity' => $item['quantity'],
-                    'subtotal' => $product->price * $item['quantity'],
+                    'type' => $item['type'],
+                    'subtotal' => $price,
                 ];
             }
         }
@@ -34,7 +37,7 @@ class CartManager
         return $cartWithProducts;
     }
 
-    public function addToCart(int $productId, float $quantity): void
+    public function addToCart(int $productId, float $quantity, string $type): void
     {
         $cart = $this->getCart();
 
@@ -42,14 +45,34 @@ class CartManager
         $uuid = $product->uuid;
 
         if (isset($cart[$uuid])) {
-            $cart[$uuid]['quantity'] += $quantity;
+            // Als het product al in de cart zit, check of type overeenkomt
+            if ($cart[$uuid]['type'] === $type) {
+                $cart[$uuid]['quantity'] += $quantity;
+            } else {
+                // Verschillend type? Je kunt er voor kiezen om een nieuw item te maken met type in key
+                $key = $uuid . '_' . $type;
+                if (isset($cart[$key])) {
+                    $cart[$key]['quantity'] += $quantity;
+                } else {
+                    $cart[$key] = [
+                        'product_id' => $productId,
+                        'uuid' => $uuid,
+                        'quantity' => $quantity,
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'type' => $type,
+                    ];
+                }
+            }
         } else {
+            // Eerste keer toevoegen
             $cart[$uuid] = [
                 'product_id' => $productId,
                 'uuid' => $uuid,
                 'quantity' => $quantity,
                 'name' => $product->name,
-                'price' => $product->price
+                'price' => $product->price,
+                'type' => $type,
             ];
         }
 
@@ -98,7 +121,9 @@ class CartManager
         foreach ($cart as $item)
         {
             $product = Product::find($item['product_id']);
-            $total += $item['quantity'] * $product['price'];
+            if ($product) {
+                $total += $product->asType()->calculatePrice($item['quantity']);
+            }
         }
         return $total;
     }
