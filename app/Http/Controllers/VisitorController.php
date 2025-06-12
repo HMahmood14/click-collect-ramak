@@ -54,17 +54,18 @@ class VisitorController extends Controller
 
     public function addToCart(Request $request): RedirectResponse
     {
+
         $validated = $request->validate([
             'product_id' => 'required|integer|exists:products,id',
             'quantity' => 'required|numeric|min:0.1',
+            'type' => 'required|string|in:kilo,stuk',
         ]);
-
-
 
         $productId = (int) $validated['product_id'];
         $quantity = (float) $validated['quantity'];
+        $type = $validated['type'];
 
-        $this->cartService->addToCart($productId, $quantity);
+        $this->cartService->addToCart($productId, $quantity, $type);
 
         return back()->with('success', 'Product toegevoegd aan winkelmandje.');
     }

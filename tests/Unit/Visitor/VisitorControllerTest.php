@@ -50,18 +50,20 @@ class VisitorControllerTest extends TestCase
 
     public function testVisitorCanAddProductToCart()
     {
-        Product::factory()->create();
-        $product = Product::first();
+        $product = Product::factory()->create();
+
+        $this->withSession([]);
 
         $response = $this->post(route('cart.add'), [
             'product_id' => $product->id,
             'quantity' => 1,
         ]);
 
-        $cart = Session::get('cart');
+        $cart = session('cart');
         $this->assertNotNull($cart);
         $this->assertCount(1, $cart);
-        $this->assertEquals($product->id, $cart[$product->id]['product_id']);
+        $this->assertArrayHasKey($product->uuid, $cart);
+        $this->assertEquals($product->id, $cart[$product->uuid]['product_id']);
 
         $response->assertRedirect();
         $response->assertSessionHas('success', 'Product toegevoegd aan winkelmandje.');

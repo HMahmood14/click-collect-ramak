@@ -21,6 +21,7 @@ class ProductFactory extends Factory
             'description' => $this->faker->text(200),
             'price' => $this->faker->randomFloat(2, 1, 100) * 100,
             'category_id' => Category::factory(),
+            'type' => 'kilo',
         ];
     }
 }

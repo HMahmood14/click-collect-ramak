@@ -43,6 +43,7 @@ class ProductControllerTest extends TestCase
             'description' => 'Dit is een testproduct voor het testen van de productfunctionaliteit.',
             'price' => 100,
             'category_id' => $category->id,
+            'type' => 'kilo'
         ];
 
         $response = $this->post(route('product.store'), $productData);
@@ -54,6 +55,7 @@ class ProductControllerTest extends TestCase
             'description' => 'Dit is een testproduct voor het testen van de productfunctionaliteit.',
             'price' => 100,
             'category_id' => $category->id,
+            'type' => 'kilo'
         ]);
     }
 
